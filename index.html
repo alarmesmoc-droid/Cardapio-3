@@ -54,7 +54,7 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
   <script>
-    // 🔹 Gera Pix Copia e Cola no padrão BACEN
+    // Função para montar o payload PIX
     function gerarPayloadPix(chave, nome, cidade, valor) {
       function formatValue(id, value) {
         let size = value.length.toString().padStart(2, "0");
@@ -63,20 +63,19 @@
 
       let payload = "";
       payload += formatValue("00", "01"); // Payload Format Indicator
-      payload += formatValue("01", "12"); // Point of Initiation Method (dinâmico)
 
-      // Merchant Account Information (Banco Central - br.gov.bcb.pix)
+      // Merchant Account Information (ID 26)
       let gui = formatValue("00", "br.gov.bcb.pix");
       let chavePix = formatValue("01", chave);
       let merchantAccount = formatValue("26", gui + chavePix);
       payload += merchantAccount;
 
-      payload += formatValue("52", "0000"); // Merchant Category Code
-      payload += formatValue("53", "986"); // Moeda - BRL
+      payload += formatValue("52", "0000"); // Merchant Category Code (default)
+      payload += formatValue("53", "986");  // Moeda - BRL
       payload += formatValue("54", valor.toString()); // Valor
-      payload += formatValue("58", "BR"); // País
-      payload += formatValue("59", nome); // Nome do recebedor
-      payload += formatValue("60", cidade); // Cidade do recebedor
+      payload += formatValue("58", "BR");   // País
+      payload += formatValue("59", nome);   // Nome recebedor
+      payload += formatValue("60", cidade); // Cidade recebedor
       payload += formatValue("62", formatValue("05", "PEDIDO1")); // Identificador do pedido
 
       payload += "6304"; // CRC placeholder
@@ -117,7 +116,7 @@
         return;
       }
 
-      const chave = "03980793664"; // Sua chave CPF
+      const chave = "03980793664"; // Sua chave PIX (CPF/email/celular/aleatória)
       const nome = "Ávilo Fonseca";
       const cidade = "Montes Claros";
 
