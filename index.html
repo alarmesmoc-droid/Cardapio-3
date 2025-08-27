@@ -2,202 +2,203 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cardápio Online</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: #f8f9fa;
+      padding: 20px;
+      background: #f8f8f8;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
-    .container {
-      background: white;
+
+    .cardapio {
+      background: #fff;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 600px;
-      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      max-width: 500px;
+      width: 100%;
     }
-    h1 {
-      font-size: 1.8em;
-      margin-bottom: 20px;
-    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 15px;
     }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
+
     th, td {
       padding: 10px;
       text-align: center;
     }
+
     th {
-      background: #f1f1f1;
+      background: #f0f0f0;
     }
-    input[type="number"] {
-      width: 60px;
-      padding: 5px;
-      text-align: center;
-    }
+
     .total {
       font-weight: bold;
-      margin: 15px 0;
+      margin-top: 15px;
       font-size: 1.2em;
     }
-    button {
+
+    .btn-pagar {
+      display: block;
+      margin: 15px auto;
+      padding: 12px;
       background: #28a745;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
+      color: #fff;
       font-size: 1em;
-      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
     }
-    button:hover {
-      background: #218838;
-    }
-    #qrcode {
+
+    .qrcode {
+      display: flex;
+      justify-content: center;
       margin-top: 15px;
     }
-    #pixCode {
-      font-size: 0.9em;
-      word-break: break-all;
-      margin: 10px 0;
-      color: #333;
-    }
-    .input-nome {
-      margin: 10px 0;
-      padding: 8px;
-      width: 100%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+
+    @media (max-width: 600px) {
+      .cardapio {
+        padding: 15px;
+      }
+      th, td {
+        font-size: 14px;
+        padding: 8px;
+      }
+      .btn-pagar {
+        font-size: 0.9em;
+        padding: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🍔 Cardápio Online</h1>
-
+  <div class="cardapio">
+    <h2>🍔 Cardápio Online</h2>
     <table>
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Preço (R$)</th>
-          <th>Quantidade</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>PASTEL</td>
-          <td>12.00</td>
-          <td><input type="number" min="0" value="0" class="qty" data-price="12"></td>
-        </tr>
-        <tr>
-          <td>REFRIGERANTE</td>
-          <td>8.00</td>
-          <td><input type="number" min="0" value="0" class="qty" data-price="8"></td>
-        </tr>
-        <tr>
-          <td>SUCO</td>
-          <td>5.00</td>
-          <td><input type="number" min="0" value="0" class="qty" data-price="5"></td>
-        </tr>
-        <tr>
-          <td>BEIJÚ</td>
-          <td>8.00</td>
-          <td><input type="number" min="0" value="0" class="qty" data-price="8"></td>
-        </tr>
-        <tr>
-          <td>MACARRÃO</td>
-          <td>10.00</td>
-          <td><input type="number" min="0" value="0" class="qty" data-price="10"></td>
-        </tr>
-        <tr>
-          <td>CANJICA</td>
-          <td>6.00</td>
-          <td><input type="number" min="0" value="0" class="qty" data-price="6"></td>
-        </tr>
-      </tbody>
+      <tr>
+        <th>Produto</th>
+        <th>Preço (R$)</th>
+        <th>Qtd</th>
+      </tr>
+      <tr>
+        <td>Pastel</td>
+        <td>10.00</td>
+        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
+      </tr>
+      <tr>
+        <td>Refrigerante</td>
+        <td>5.00</td>
+        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
+      </tr>
+      <tr>
+        <td>Suco</td>
+        <td>6.00</td>
+        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
+      </tr>
+      <tr>
+        <td>Bolo</td>
+        <td>7.00</td>
+        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
+      </tr>
+      <tr>
+        <td>Salgado</td>
+        <td>8.00</td>
+        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
+      </tr>
     </table>
 
     <div class="total">Total: R$ <span id="total">0.00</span></div>
 
-    <!-- Campo para nome do cliente -->
-    <input type="text" id="nomeCliente" class="input-nome" placeholder="Digite seu nome">
+    <button class="btn-pagar" onclick="gerarPix()">Gerar QR Code Pix</button>
 
-    <button onclick="gerarPix()">Gerar PIX para Pagamento</button>
-    <div id="pixCode"></div>
-    <button id="copyBtn" style="display:none;" onclick="copiarPix()">📋 Copiar Código PIX</button>
-    <div id="qrcode"></div>
+    <div class="qrcode" id="qrcode"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    const totalElement = document.getElementById("total");
-    const qtyInputs = document.querySelectorAll(".qty");
-
-    qtyInputs.forEach(input => {
-      input.addEventListener("input", calcularTotal);
-    });
-
     function calcularTotal() {
       let total = 0;
-      qtyInputs.forEach(input => {
-        total += input.value * input.dataset.price;
+      document.querySelectorAll("table tr").forEach((linha, i) => {
+        if (i === 0) return; // ignora cabeçalho
+        let preco = parseFloat(linha.cells[1].innerText);
+        let qtd = parseInt(linha.cells[2].children[0].value);
+        total += preco * qtd;
       });
-      totalElement.textContent = total.toFixed(2);
+      document.getElementById("total").innerText = total.toFixed(2);
     }
 
     function gerarPix() {
-      const total = parseFloat(totalElement.textContent);
-      const nomeCliente = document.getElementById("nomeCliente").value.trim();
-
+      let total = parseFloat(document.getElementById("total").innerText);
       if (total <= 0) {
-        alert("Selecione ao menos 1 item para gerar o PIX!");
-        return;
-      }
-      if (!nomeCliente) {
-        alert("Digite seu nome antes de gerar o PIX!");
+        alert("Selecione algum item para gerar o Pix.");
         return;
       }
 
-      // Dados PIX fixos
-      const chavePix = "03980793664"; // sua chave CPF
-      const nome = "Avilo Fonseca";
-      const cidade = "Montes Claros";
-      
-      // Montagem do payload PIX (inserindo nome do cliente no campo txid/descrição)
-      const pixPayload = `00020126330014br.gov.bcb.pix0111${chavePix}520400005303986540${total.toFixed(2)}5802BR5913${nome}6013${cidade}6207${nomeCliente}6304ABCD`;
+      // DADOS DO PIX FIXOS
+      let chavePix = "03980793664"; 
+      let nomeRecebedor = "Avilo Fonseca";
+      let cidadeRecebedor = "Montes Claros";
+      let identificador = "CARDAPIO123"; 
 
-      // Mostrar código
-      document.getElementById("pixCode").textContent = pixPayload;
+      // Monta o payload Pix válido
+      let payload = gerarPayloadPix(chavePix, nomeRecebedor, cidadeRecebedor, total, identificador);
 
-      // Exibir botão de copiar
-      document.getElementById("copyBtn").style.display = "inline-block";
-
-      // Gerar QR Code
+      // Gera QR Code
       document.getElementById("qrcode").innerHTML = "";
       new QRCode(document.getElementById("qrcode"), {
-        text: pixPayload,
-        width: 200,
-        height: 200
+        text: payload,
+        width: 220,
+        height: 220
       });
     }
 
-    function copiarPix() {
-      const pixCode = document.getElementById("pixCode").textContent;
-      navigator.clipboard.writeText(pixCode).then(() => {
-        alert("Código PIX copiado com sucesso!");
-      });
+    function gerarPayloadPix(chave, nome, cidade, valor, txid) {
+      function monta(id, valor) {
+        let size = ("00" + valor.length).slice(-2);
+        return id + size + valor;
+      }
+
+      let payload = "";
+      payload += monta("00","01"); 
+      payload += monta("26", monta("00","BR.GOV.BCB.PIX") + monta("01", chave));
+      payload += monta("52","0000");
+      payload += monta("53","986");
+      payload += monta("54", valor.toFixed(2));
+      payload += monta("58","BR");
+      payload += monta("59", nome);
+      payload += monta("60", cidade);
+      payload += monta("62", monta("05", txid));
+
+      // Adiciona CRC16
+      payload += "6304";
+      payload += crc16(payload);
+
+      return payload;
+    }
+
+    function crc16(payload) {
+      let polinomio = 0x1021;
+      let resultado = 0xFFFF;
+      for (let i = 0; i < payload.length; i++) {
+        resultado ^= (payload.charCodeAt(i) << 8);
+        for (let j = 0; j < 8; j++) {
+          if ((resultado & 0x8000) !== 0) {
+            resultado = (resultado << 1) ^ polinomio;
+          } else {
+            resultado <<= 1;
+          }
+          resultado &= 0xFFFF;
+        }
+      }
+      return resultado.toString(16).toUpperCase().padStart(4, "0");
     }
   </script>
 </body>
