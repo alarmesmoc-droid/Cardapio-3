@@ -7,171 +7,198 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f2f2f2;
+      background: #f8f9fa;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
     }
-
     .container {
       background: white;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 90%;
       max-width: 600px;
-      width: 100%;
       text-align: center;
     }
-
     h1 {
+      font-size: 1.8em;
       margin-bottom: 20px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 15px;
     }
-
+    table, th, td {
+      border: 1px solid #ddd;
+    }
     th, td {
       padding: 10px;
-      border: 1px solid #ddd;
       text-align: center;
     }
-
     th {
-      background: #f8f8f8;
+      background: #f1f1f1;
     }
-
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      text-align: center;
+    }
     .total {
-      margin: 15px 0;
-      font-size: 20px;
       font-weight: bold;
+      margin: 15px 0;
+      font-size: 1.2em;
     }
-
-    .pix {
-      margin-top: 20px;
-    }
-
-    #pix-code {
-      word-break: break-all;
-      margin: 10px 0;
-      font-size: 13px;
-      color: #333;
-    }
-
-    #qrcode {
-      margin-top: 15px;
-      display: flex;
-      justify-content: center;
-    }
-
     button {
-      padding: 12px 20px;
-      cursor: pointer;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      margin: 5px;
-      transition: 0.3s;
-    }
-
-    .btn-green {
       background: #28a745;
       color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      margin: 5px;
     }
-    .btn-green:hover {
+    button:hover {
       background: #218838;
     }
-
-    .btn-red {
-      background: #dc3545;
-      color: white;
+    #qrcode {
+      margin-top: 15px;
     }
-    .btn-red:hover {
-      background: #b52a37;
+    #pixCode {
+      font-size: 0.9em;
+      word-break: break-all;
+      margin: 10px 0;
+      color: #333;
     }
-
-    /* Responsividade: tabela vira lista em celular */
-    @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-
-      th {
-        display: none;
-      }
-
-      tr {
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 10px;
-        text-align: left;
-      }
-
-      td {
-        border: none;
-        padding: 5px;
-        text-align: left;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      td input {
-        max-width: 70px;
-      }
+    .input-nome {
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
     <h1>🍔 Cardápio Online</h1>
 
     <table>
-      <tr>
-        <th>Produto</th>
-        <th>Preço (R$)</th>
-        <th>Quantidade</th>
-      </tr>
-      <tr>
-        <td>PASTEL</td>
-        <td>12.00</td>
-        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
-      </tr>
-      <tr>
-        <td>REFRIGERANTE</td>
-        <td>8.00</td>
-        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
-      </tr>
-      <tr>
-        <td>SUCO</td>
-        <td>5.00</td>
-        <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
-      </tr>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Preço (R$)</th>
+          <th>Quantidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PASTEL</td>
+          <td>12.00</td>
+          <td><input type="number" min="0" value="0" class="qty" data-price="12"></td>
+        </tr>
+        <tr>
+          <td>REFRIGERANTE</td>
+          <td>8.00</td>
+          <td><input type="number" min="0" value="0" class="qty" data-price="8"></td>
+        </tr>
+        <tr>
+          <td>SUCO</td>
+          <td>5.00</td>
+          <td><input type="number" min="0" value="0" class="qty" data-price="5"></td>
+        </tr>
+        <tr>
+          <td>BEIJÚ</td>
+          <td>8.00</td>
+          <td><input type="number" min="0" value="0" class="qty" data-price="8"></td>
+        </tr>
+        <tr>
+          <td>MACARRÃO</td>
+          <td>10.00</td>
+          <td><input type="number" min="0" value="0" class="qty" data-price="10"></td>
+        </tr>
+        <tr>
+          <td>CANJICA</td>
+          <td>6.00</td>
+          <td><input type="number" min="0" value="0" class="qty" data-price="6"></td>
+        </tr>
+      </tbody>
     </table>
 
     <div class="total">Total: R$ <span id="total">0.00</span></div>
 
-    <div class="pix">
-      <button class="btn-green" onclick="gerarPix()">Gerar PIX para Pagamento</button>
-      <p id="pix-code"></p>
-      <button id="copy-btn" class="btn-red" style="display:none;" onclick="copiarPix()">📋 Copiar Código PIX</button>
-      <div id="qrcode"></div>
-    </div>
+    <!-- Campo para nome do cliente -->
+    <input type="text" id="nomeCliente" class="input-nome" placeholder="Digite seu nome">
+
+    <button onclick="gerarPix()">Gerar PIX para Pagamento</button>
+    <div id="pixCode"></div>
+    <button id="copyBtn" style="display:none;" onclick="copiarPix()">📋 Copiar Código PIX</button>
+    <div id="qrcode"></div>
   </div>
 
-  <!-- Biblioteca para QR Code -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <script>
-    function removerAcentos(str) {
-      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const totalElement = document.getElementById("total");
+    const qtyInputs = document.querySelectorAll(".qty");
+
+    qtyInputs.forEach(input => {
+      input.addEventListener("input", calcularTotal);
+    });
+
+    function calcularTotal() {
+      let total = 0;
+      qtyInputs.forEach(input => {
+        total += input.value * input.dataset.price;
+      });
+      totalElement.textContent = total.toFixed(2);
     }
 
-    function gerarPayloadPix(chave, nome, cidade, valor) {
-      function formatValue(id, value) {
-        let size = value.length.toString().padStart(2, "0");
+    function gerarPix() {
+      const total = parseFloat(totalElement.textContent);
+      const nomeCliente = document.getElementById("nomeCliente").value.trim();
+
+      if (total <= 0) {
+        alert("Selecione ao menos 1 item para gerar o PIX!");
+        return;
+      }
+      if (!nomeCliente) {
+        alert("Digite seu nome antes de gerar o PIX!");
+        return;
+      }
+
+      // Dados PIX fixos
+      const chavePix = "03980793664"; // sua chave CPF
+      const nome = "Avilo Fonseca";
+      const cidade = "Montes Claros";
+      
+      // Montagem do payload PIX (inserindo nome do cliente no campo txid/descrição)
+      const pixPayload = `00020126330014br.gov.bcb.pix0111${chavePix}520400005303986540${total.toFixed(2)}5802BR5913${nome}6013${cidade}6207${nomeCliente}6304ABCD`;
+
+      // Mostrar código
+      document.getElementById("pixCode").textContent = pixPayload;
+
+      // Exibir botão de copiar
+      document.getElementById("copyBtn").style.display = "inline-block";
+
+      // Gerar QR Code
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: pixPayload,
+        width: 200,
+        height: 200
+      });
+    }
+
+    function copiarPix() {
+      const pixCode = document.getElementById("pixCode").textContent;
+      navigator.clipboard.writeText(pixCode).then(() => {
+        alert("Código PIX copiado com sucesso!");
+      });
+    }
+  </script>
+</body>
+</html>
