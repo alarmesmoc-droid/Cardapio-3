@@ -54,7 +54,7 @@
       document.getElementById("total").textContent = total.toFixed(2).replace('.', ',');
     }
 
-    // Função para calcular CRC16 exigido pelo padrão do BACEN
+    // Cálculo oficial do CRC16-CCITT (polinômio 0x1021)
     function crc16(str) {
       let crc = 0xFFFF;
       for (let i = 0; i < str.length; i++) {
@@ -68,29 +68,37 @@
           crc &= 0xFFFF;
         }
       }
-      return crc.toString(16).toUpperCase().padStart(4, '0');
+      return crc.toString(16).toUpperCase().padStart(4, "0");
     }
 
     function gerarPixPayload(valor) {
-      const chave = "03980793664"; // chave pix
-      const nome = "Avilo Fonseca";
-      const cidade = "Montes Claros";
+      const chave = "03980793664"; // CPF usado como chave Pix
+      const nome = "AVILO FONSECA"; // até 25 caracteres, maiúsculo
+      const cidade = "MONTES CLAROS"; // até 15 caracteres
       const valorFormatado = valor.toFixed(2);
 
+      // GUI fixo do Pix
+      const gui = "BR.GOV.BCB.PIX";
+
+      // Monta campo 26 (Merchant Account Information)
+      const guiField = "00" + gui.length.toString().padStart(2, "0") + gui;
+      const chaveField = "01" + chave.length.toString().padStart(2, "0") + chave;
+      const merchantAccountInfo = guiField + chaveField;
+
       let payload =
-        "000201" + // Payload format
-        "010212" + // Transação
-        "26" + (4 + 14 + chave.length).toString().padStart(2, '0') + "0014BR.GOV.BCB.PIX01" + chave +
+        "000201" + // Payload Format Indicator
+        "010212" + // Point of Initiation Method
+        "26" + merchantAccountInfo.length.toString().padStart(2, "0") + merchantAccountInfo +
         "52040000" + // Merchant Category Code
         "5303986" +  // Moeda BRL
-        "54" + valorFormatado.length.toString().padStart(2, '0') + valorFormatado +
+        "54" + valorFormatado.length.toString().padStart(2, "0") + valorFormatado +
         "5802BR" + 
-        "59" + nome.length.toString().padStart(2, '0') + nome +
-        "60" + cidade.length.toString().padStart(2, '0') + cidade +
-        "62070503***" +
-        "6304";
+        "59" + nome.length.toString().padStart(2, "0") + nome +
+        "60" + cidade.length.toString().padStart(2, "0") + cidade +
+        "62070503***" + // Additional Data
+        "6304"; // Placeholder CRC16
 
-      // Adiciona o CRC16 no final
+      // Calcula CRC16 e adiciona
       const crc = crc16(payload);
       return payload + crc;
     }
