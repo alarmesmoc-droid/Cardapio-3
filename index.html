@@ -12,7 +12,9 @@
     .total { margin-top: 20px; font-size: 18px; font-weight: bold; }
     .pix { margin-top: 20px; text-align: center; }
     #qrcode { margin-top: 10px; display: inline-block; }
-    button { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
+    button { padding: 10px 20px; margin-top: 10px; cursor: pointer; border: none; border-radius: 8px; background: #4CAF50; color: white; font-size: 14px; }
+    button:hover { background: #45a049; }
+    #pix-code { word-break: break-all; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -26,17 +28,17 @@
       <th>Quantidade</th>
     </tr>
     <tr>
-      <td>X-Burger</td>
+      <td>PASTEL</td>
       <td>12.00</td>
       <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
     </tr>
     <tr>
-      <td>Pizza Fatia</td>
+      <td>REFRIGERANTE</td>
       <td>8.00</td>
       <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
     </tr>
     <tr>
-      <td>Refrigerante</td>
+      <td>SUCO</td>
       <td>5.00</td>
       <td><input type="number" min="0" value="0" onchange="calcularTotal()"></td>
     </tr>
@@ -47,6 +49,7 @@
   <div class="pix">
     <button onclick="gerarPix()">Gerar PIX para Pagamento</button>
     <p id="pix-code"></p>
+    <button id="copy-btn" style="display:none;" onclick="copiarPix()">📋 Copiar Código PIX</button>
     <div id="qrcode"></div>
   </div>
 
@@ -54,6 +57,11 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
   <script>
+    // Remove acentos (necessário para conformidade com PIX)
+    function removerAcentos(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
     // Função para montar o payload PIX
     function gerarPayloadPix(chave, nome, cidade, valor) {
       function formatValue(id, value) {
@@ -70,17 +78,16 @@
       let merchantAccount = formatValue("26", gui + chavePix);
       payload += merchantAccount;
 
-      payload += formatValue("52", "0000"); // Merchant Category Code (default)
-      payload += formatValue("53", "986");  // Moeda - BRL
+      payload += formatValue("52", "0000"); // Merchant Category Code
+      payload += formatValue("53", "986");  // Moeda BRL
       payload += formatValue("54", valor.toString()); // Valor
       payload += formatValue("58", "BR");   // País
-      payload += formatValue("59", nome);   // Nome recebedor
-      payload += formatValue("60", cidade); // Cidade recebedor
-      payload += formatValue("62", formatValue("05", "PEDIDO1")); // Identificador do pedido
+      payload += formatValue("59", removerAcentos(nome).substring(0,25));   // Nome recebedor
+      payload += formatValue("60", removerAcentos(cidade).substring(0,15)); // Cidade recebedor
+      payload += formatValue("62", formatValue("05", "123")); // TxID simples
 
-      payload += "6304"; // CRC placeholder
-
-      // Função CRC16
+      // CRC16
+      payload += "6304";
       function crc16(str) {
         let crc = 0xFFFF;
         for (let i = 0; i < str.length; i++) {
@@ -93,8 +100,8 @@
         }
         return crc.toString(16).toUpperCase().padStart(4, "0");
       }
-
       payload += crc16(payload);
+
       return payload;
     }
 
@@ -116,17 +123,27 @@
         return;
       }
 
-      const chave = "03980793664"; // Sua chave PIX (CPF/email/celular/aleatória)
-      const nome = "Ávilo Fonseca";
-      const cidade = "Montes Claros";
+      const chave = "03980793664"; // Sua chave PIX
+      const nome = "Avilo Fonseca"; // SEM acentos
+      const cidade = "Montes Claros"; // SEM acentos
 
       const payload = gerarPayloadPix(chave, nome, cidade, total.toFixed(2));
       document.getElementById("pix-code").innerText = payload;
 
-      // Gera o QR Code oficial
+      // Mostrar botão de copiar
+      document.getElementById("copy-btn").style.display = "inline-block";
+
+      // Gera o QR Code
       document.getElementById("qrcode").innerHTML = "";
       QRCode.toCanvas(document.createElement('canvas'), payload, function (err, canvas) {
         if (!err) document.getElementById("qrcode").appendChild(canvas);
+      });
+    }
+
+    function copiarPix() {
+      let pixCode = document.getElementById("pix-code").innerText;
+      navigator.clipboard.writeText(pixCode).then(() => {
+        alert("Código PIX copiado com sucesso!");
       });
     }
   </script>
