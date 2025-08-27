@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardápio Online</title>
+  <title>Cardápio Online Paróquia São Judas</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,9 +44,9 @@
       font-size: 1.2em;
     }
 
-    .btn-pagar {
+    .btn {
       display: block;
-      margin: 15px auto;
+      margin: 10px auto;
       padding: 12px;
       background: #28a745;
       color: #fff;
@@ -58,10 +58,24 @@
       width: 100%;
     }
 
+    .btn-copy {
+      background: #007bff;
+    }
+
     .qrcode {
       display: flex;
       justify-content: center;
       margin-top: 15px;
+    }
+
+    #pixCode {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.9em;
+      word-break: break-all;
+      background: #f1f1f1;
+      padding: 8px;
+      border-radius: 6px;
     }
 
     @media (max-width: 600px) {
@@ -72,7 +86,7 @@
         font-size: 14px;
         padding: 8px;
       }
-      .btn-pagar {
+      .btn {
         font-size: 0.9em;
         padding: 10px;
       }
@@ -81,7 +95,7 @@
 </head>
 <body>
   <div class="cardapio">
-    <h2>🍔 Cardápio Online</h2>
+    <h2>🍔 Cardápio Online Paróquia São Judas</h2>
     <table>
       <tr>
         <th>Produto</th>
@@ -117,13 +131,17 @@
 
     <div class="total">Total: R$ <span id="total">0.00</span></div>
 
-    <button class="btn-pagar" onclick="gerarPix()">Gerar QR Code Pix</button>
+    <button class="btn" onclick="gerarPix()">Gerar QR Code Pix</button>
+    <button class="btn btn-copy" onclick="copiarPix()">Copiar Código Pix</button>
 
     <div class="qrcode" id="qrcode"></div>
+    <div id="pixCode"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
+    let ultimoPayload = "";
+
     function calcularTotal() {
       let total = 0;
       document.querySelectorAll("table tr").forEach((linha, i) => {
@@ -151,12 +169,29 @@
       // Monta o payload Pix válido
       let payload = gerarPayloadPix(chavePix, nomeRecebedor, cidadeRecebedor, total, identificador);
 
+      // Guarda o payload para o botão de copiar
+      ultimoPayload = payload;
+
+      // Mostra o código Pix abaixo também
+      document.getElementById("pixCode").style.display = "block";
+      document.getElementById("pixCode").innerText = payload;
+
       // Gera QR Code
       document.getElementById("qrcode").innerHTML = "";
       new QRCode(document.getElementById("qrcode"), {
         text: payload,
         width: 220,
         height: 220
+      });
+    }
+
+    function copiarPix() {
+      if (!ultimoPayload) {
+        alert("Primeiro gere o QR Code Pix.");
+        return;
+      }
+      navigator.clipboard.writeText(ultimoPayload).then(() => {
+        alert("Código Pix copiado com sucesso!");
       });
     }
 
