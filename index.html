@@ -7,191 +7,188 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f8f9fa;
-    }
-    header {
-      background: #004080;
-      color: #fff;
+      margin: 20px;
+      background: #f8f8f8;
       text-align: center;
-      padding: 15px;
-      font-size: 1.3rem;
-      font-weight: bold;
     }
-    .container {
-      padding: 20px;
+    h1 {
+      color: #2c3e50;
     }
-    .cardapio {
+    .menu {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 15px;
+      margin-top: 20px;
     }
     .item {
       background: #fff;
       padding: 15px;
       border-radius: 12px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .item h3 {
-      margin: 0 0 10px;
     }
     .item button {
-      background: #004080;
-      color: #fff;
-      border: none;
+      margin-top: 10px;
       padding: 8px 12px;
+      border: none;
       border-radius: 8px;
+      background: #3498db;
+      color: white;
       cursor: pointer;
-      margin-top: 5px;
     }
     .item button:hover {
-      background: #0066cc;
+      background: #2980b9;
     }
-    .total-bar {
+    #total-container {
       position: fixed;
       bottom: 0;
       left: 0;
-      width: 100%;
-      background: #004080;
-      color: #fff;
+      right: 0;
+      background: #2ecc71;
+      color: white;
       padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.2rem;
     }
-    .total-bar button {
-      background: #28a745;
-      border: none;
+    #finalizar {
+      background: #e67e22;
       padding: 10px 15px;
-      color: #fff;
       border-radius: 8px;
       cursor: pointer;
+      border: none;
+      color: white;
+      font-weight: bold;
     }
-    .total-bar button:hover {
-      background: #218838;
-    }
-    #pix-section {
-      display: none;
-      background: #fff;
-      padding: 20px;
+    #pix-container {
       margin-top: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
+      display: none;
     }
-    #pix-code {
-      word-break: break-all;
-      background: #f1f1f1;
-      padding: 10px;
-      border-radius: 8px;
-      margin: 10px 0;
-      font-size: 0.9rem;
-    }
-    #pix-section button {
-      background: #007bff;
-      border: none;
+    #copyBtn {
+      margin-top: 10px;
       padding: 10px 15px;
-      color: #fff;
+      background: #3498db;
+      border: none;
       border-radius: 8px;
+      color: white;
       cursor: pointer;
     }
-    #pix-section button:hover {
-      background: #0056b3;
-    }
-    input {
-      padding: 10px;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin: 10px 0;
-    }
-    canvas {
-      margin-top: 10px;
+    #copyBtn:hover {
+      background: #2980b9;
     }
   </style>
 </head>
 <body>
+  <h1>Cardápio Online Paróquia São Judas</h1>
 
-<header>Cardápio Online Paróquia São Judas</header>
-
-<div class="container">
-  <div class="cardapio">
+  <div class="menu">
     <div class="item">
-      <h3>Pastel</h3>
-      <p>R$ 8,00</p>
-      <button onclick="addItem('Pastel', 8)">Adicionar</button>
-    </div>
-    <div class="item">
-      <h3>Refrigerante</h3>
-      <p>R$ 5,00</p>
-      <button onclick="addItem('Refrigerante', 5)">Adicionar</button>
+      <h3>Macarrão</h3>
+      <p>R$ 10,00</p>
+      <button onclick="adicionar(10)">Adicionar</button>
     </div>
     <div class="item">
       <h3>Bolo</h3>
+      <p>R$ 7,00</p>
+      <button onclick="adicionar(7)">Adicionar</button>
+    </div>
+    <div class="item">
+      <h3>Salgado</h3>
       <p>R$ 6,00</p>
-      <button onclick="addItem('Bolo', 6)">Adicionar</button>
+      <button onclick="adicionar(6)">Adicionar</button>
+    </div>
+    <div class="item">
+      <h3>Doce</h3>
+      <p>R$ 5,00</p>
+      <button onclick="adicionar(5)">Adicionar</button>
+    </div>
+    <div class="item">
+      <h3>Refrigerante</h3>
+      <p>R$ 8,00</p>
+      <button onclick="adicionar(8)">Adicionar</button>
+    </div>
+    <div class="item">
+      <h3>Suco</h3>
+      <p>R$ 5,00</p>
+      <button onclick="adicionar(5)">Adicionar</button>
+    </div>
+    <div class="item">
+      <h3>Água</h3>
+      <p>R$ 3,00</p>
+      <button onclick="adicionar(3)">Adicionar</button>
     </div>
   </div>
 
-  <div id="pix-section">
-    <h2>Finalize seu pedido</h2>
-    <label for="nome">Seu nome:</label>
-    <input type="text" id="nome" placeholder="Digite seu nome">
-    
-    <h3>Código Pix:</h3>
-    <div id="pix-code"></div>
-    <button onclick="copyPix()">Copiar Código Pix</button>
-    <canvas id="qrcode"></canvas>
+  <div id="total-container">
+    <span>Total: R$ <span id="total">0,00</span></span>
+    <button id="finalizar" onclick="mostrarPix()">Finalizar Pedido</button>
   </div>
-</div>
 
-<div class="total-bar">
-  <span>Total: R$ <span id="total">0.00</span></span>
-  <button onclick="finalizarPedido()">Finalizar Pedido</button>
-</div>
+  <div id="pix-container">
+    <h2>Pagamento via Pix</h2>
+    <p>Código Copia e Cola:</p>
+    <textarea id="pixCode" rows="5" cols="40" readonly></textarea><br>
+    <button id="copyBtn" onclick="copiarPix()">Copiar Código Pix</button>
+    <p>Ou escaneie o QR Code abaixo:</p>
+    <div id="qrcode"></div>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<script>
-  let total = 0;
-  let items = [];
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    let total = 0;
 
-  function addItem(nome, preco) {
-    total += preco;
-    items.push({nome, preco});
-    document.getElementById("total").innerText = total.toFixed(2);
-  }
-
-  function finalizarPedido() {
-    if(total === 0){
-      alert("Escolha ao menos um produto antes de finalizar.");
-      return;
+    function adicionar(valor) {
+      total += valor;
+      document.getElementById("total").textContent = total.toFixed(2).replace('.', ',');
     }
 
-    let nomeComprador = document.getElementById("nome").value.trim() || "Cliente";
+    function gerarPixPayload(valor) {
+      const chave = "03980793664";
+      const nome = "Avilo Fonseca";
+      const cidade = "Montes Claros";
+      const valorFormatado = valor.toFixed(2);
 
-    // Payload Pix corrigido
-    let pixPayload = `00020126580014BR.GOV.BCB.PIX013103980793664520400005303986540${total.toFixed(2).replace('.', '')}5802BR5914Ávilo Fonseca6012Montes Claros62070503***6304`;
+      let payload = 
+        "000201" + 
+        "010212" + 
+        "26" + (14 + chave.length).toString().padStart(2, '0') + "0014BR.GOV.BCB.PIX01" + chave +
+        "52040000" + 
+        "5303986" + 
+        "54" + valorFormatado.length.toString().padStart(2, '0') + valorFormatado +
+        "5802BR" + 
+        "59" + nome.length.toString().padStart(2, '0') + nome +
+        "60" + cidade.length.toString().padStart(2, '0') + cidade +
+        "62070503***" + 
+        "6304";
 
-    document.getElementById("pix-code").innerText = pixPayload;
-    document.getElementById("pix-section").style.display = "block";
+      return payload;
+    }
 
-    // Gera QR Code
-    let canvas = document.getElementById("qrcode");
-    QRCode.toCanvas(canvas, pixPayload, { width: 200 }, function (error) {
-      if (error) console.error(error);
-    });
-  }
+    function mostrarPix() {
+      if (total === 0) {
+        alert("Adicione ao menos 1 produto!");
+        return;
+      }
 
-  function copyPix() {
-    let codigo = document.getElementById("pix-code").innerText;
-    navigator.clipboard.writeText(codigo).then(() => {
+      const payload = gerarPixPayload(total);
+      document.getElementById("pixCode").value = payload;
+      document.getElementById("pix-container").style.display = "block";
+
+      document.getElementById("qrcode").innerHTML = "";
+      QRCode.toCanvas(document.createElement("canvas"), payload, { width: 200 }, function (err, canvas) {
+        if (!err) {
+          document.getElementById("qrcode").appendChild(canvas);
+        }
+      });
+    }
+
+    function copiarPix() {
+      const pixCode = document.getElementById("pixCode");
+      pixCode.select();
+      document.execCommand("copy");
       alert("Código Pix copiado com sucesso!");
-    });
-  }
-</script>
-
+    }
+  </script>
 </body>
 </html>
