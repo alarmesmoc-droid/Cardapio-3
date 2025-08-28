@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cardápio Online Paróquia São Judas</title>
   <style>
     body {
@@ -71,43 +71,30 @@
       width: 100%;
       background: #fff8dc;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 12px;
       border-top: 2px solid #228B22;
-      gap: 8px;
+      gap: 10px;
       box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
       z-index: 10;
-    }
-    .footer span {
-      font-weight: bold;
-      font-size: 14px;
-      color: #006400;
     }
     .footer button {
       background: #daa520;
       color: white;
       border: none;
-      padding: 10px 14px;
+      padding: 10px 18px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: bold;
       transition: background 0.2s;
-      flex: 1;
-      min-width: 120px;
     }
-    .footer button:hover:enabled {
+    .footer button:hover {
       background: #b8860b;
     }
-    .footer button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
     .footer input {
-      flex: 2;
-      min-width: 140px;
+      flex: 1;
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -120,7 +107,7 @@
       border-radius: 12px;
       box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
       display: none;
-      margin-bottom: 90px; /* espaço extra acima da barra fixa */
+      margin-bottom: 80px;
     }
     #pix-area h2 {
       color: #006400;
@@ -132,25 +119,6 @@
       border: 1px solid #ccc;
       font-size: 14px;
     }
-    .copy-btn {
-      background: #228B22;
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: background 0.2s;
-      margin-top: 10px;
-    }
-    .copy-btn:hover:enabled {
-      background: #006400;
-    }
-    .copy-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
   </style>
 </head>
 <body>
@@ -158,28 +126,67 @@
   <h1>Cardápio Online Paróquia São Judas</h1>
 
   <div class="menu" id="menu">
-    <div class="item"><h3>Macarrão</h3><p>R$ 10,00</p><div class="buttons"><button onclick="addItem(10)">+</button><button onclick="removeItem(10)">-</button></div></div>
-    <div class="item"><h3>Bolo</h3><p>R$ 7,00</p><div class="buttons"><button onclick="addItem(7)">+</button><button onclick="removeItem(7)">-</button></div></div>
-    <div class="item"><h3>Salgado</h3><p>R$ 6,00</p><div class="buttons"><button onclick="addItem(6)">+</button><button onclick="removeItem(6)">-</button></div></div>
-    <div class="item"><h3>Doce</h3><p>R$ 5,00</p><div class="buttons"><button onclick="addItem(5)">+</button><button onclick="removeItem(5)">-</button></div></div>
-    <div class="item"><h3>Refrigerante</h3><p>R$ 8,00</p><div class="buttons"><button onclick="addItem(8)">+</button><button onclick="removeItem(8)">-</button></div></div>
-    <div class="item"><h3>Suco</h3><p>R$ 5,00</p><div class="buttons"><button onclick="addItem(5)">+</button><button onclick="removeItem(5)">-</button></div></div>
+    <div class="item">
+      <h3>Macarrão</h3>
+      <p>R$ 10,00</p>
+      <div class="buttons">
+        <button onclick="addItem(10)">+</button>
+        <button onclick="removeItem(10)">-</button>
+      </div>
+    </div>
+    <div class="item">
+      <h3>Bolo</h3>
+      <p>R$ 7,00</p>
+      <div class="buttons">
+        <button onclick="addItem(7)">+</button>
+        <button onclick="removeItem(7)">-</button>
+      </div>
+    </div>
+    <div class="item">
+      <h3>Salgado</h3>
+      <p>R$ 6,00</p>
+      <div class="buttons">
+        <button onclick="addItem(6)">+</button>
+        <button onclick="removeItem(6)">-</button>
+      </div>
+    </div>
+    <div class="item">
+      <h3>Doce</h3>
+      <p>R$ 5,00</p>
+      <div class="buttons">
+        <button onclick="addItem(5)">+</button>
+        <button onclick="removeItem(5)">-</button>
+      </div>
+    </div>
+    <div class="item">
+      <h3>Refrigerante</h3>
+      <p>R$ 8,00</p>
+      <div class="buttons">
+        <button onclick="addItem(8)">+</button>
+        <button onclick="removeItem(8)">-</button>
+      </div>
+    </div>
+    <div class="item">
+      <h3>Suco</h3>
+      <p>R$ 5,00</p>
+      <div class="buttons">
+        <button onclick="addItem(5)">+</button>
+        <button onclick="removeItem(5)">-</button>
+      </div>
+    </div>
   </div>
 
   <div class="footer">
     <span id="total">Total: R$ 0,00</span>
     <input type="text" id="nomeCliente" placeholder="Digite seu nome">
     <button onclick="finalizarPedido()">Finalizar Pedido</button>
-    <button id="copyPixBtn" class="copy-btn" onclick="copiarPix()" disabled>Copiar Código Pix</button>
   </div>
 
   <div id="pix-area">
     <h2>Finalize seu pagamento</h2>
-    <p>Use o QR Code ou copie o código Pix abaixo:</p>
+    <p>Use o QR Code ou o código Pix abaixo:</p>
     <div id="qrcode"></div>
     <textarea id="pixCode" rows="4" readonly></textarea>
-    <br>
-    <button class="copy-btn" onclick="copiarPix()">Copiar Código Pix</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -202,6 +209,24 @@
       }
     }
 
+    // 🔹 Função para calcular CRC16 exigido pelo padrão Pix
+    function gerarCRC16(payload) {
+      let polinomio = 0x1021;
+      let resultado = 0xFFFF;
+
+      for (let i = 0; i < payload.length; i++) {
+        resultado ^= (payload.charCodeAt(i) << 8);
+        for (let j = 0; j < 8; j++) {
+          if ((resultado & 0x8000) !== 0) {
+            resultado = ((resultado << 1) ^ polinomio) & 0xFFFF;
+          } else {
+            resultado = (resultado << 1) & 0xFFFF;
+          }
+        }
+      }
+      return resultado.toString(16).toUpperCase().padStart(4, '0');
+    }
+
     function finalizarPedido() {
       const nome = document.getElementById("nomeCliente").value.trim();
       if (total <= 0) {
@@ -213,11 +238,27 @@
         return;
       }
 
-      const chavePix = "03980793664";
+      const chavePix = "03980793664"; // CPF do recebedor
       const nomeRecebedor = "Paroquia Sao Judas";
       const cidade = "Montes Claros";
+      const valor = total.toFixed(2);
 
-      let payload = `00020126360014BR.GOV.BCB.PIX01${chavePix.length}${chavePix}520400005303986540${total.toFixed(2).replace('.', '')}5802BR5914${nomeRecebedor}6009${cidade}62130515${nome}6304`;
+      let payload = ""
+        + "000201" 
+        + "26" + String(14 + chavePix.length).padStart(2, "0") + "0014BR.GOV.BCB.PIX"
+        + "01" + String(chavePix.length).padStart(2, "0") + chavePix
+        + "52040000"
+        + "5303986"
+        + "54" + String(valor.length).padStart(2, "0") + valor
+        + "5802BR"
+        + "59" + String(nomeRecebedor.length).padStart(2, "0") + nomeRecebedor
+        + "60" + String(cidade.length).padStart(2, "0") + cidade
+        + "62" + String(5 + nome.length).padStart(2, "0") + "05" + String(nome.length).padStart(2, "0") + nome
+        + "6304";
+
+      // 🔹 Gerar o CRC16 correto
+      const crc16 = gerarCRC16(payload);
+      payload += crc16;
 
       document.getElementById("pix-area").style.display = "block";
       document.getElementById("pixCode").value = payload;
@@ -229,22 +270,7 @@
         height: 200
       });
 
-      // 🔓 Ativar botão na barra fixa
-      document.getElementById("copyPixBtn").disabled = false;
-
       document.getElementById("pix-area").scrollIntoView({ behavior: "smooth" });
-    }
-
-    function copiarPix() {
-      const pixCode = document.getElementById("pixCode");
-      if (!pixCode.value) {
-        alert("Finalize o pedido para gerar o código Pix.");
-        return;
-      }
-      pixCode.select();
-      pixCode.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-      alert("Código Pix copiado com sucesso!");
     }
   </script>
 
