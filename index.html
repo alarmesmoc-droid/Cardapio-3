@@ -9,31 +9,40 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f8f9fa;
+      background: #f1f8f4; /* verde bem claro */
       text-align: center;
     }
     h1 {
-      background: #fff;
+      background: linear-gradient(90deg, #006400, #228B22); /* verde mais escuro e forte */
       padding: 15px;
       margin: 0;
       font-size: 22px;
-      color: #2c3e50;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      color: #fff;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
     }
     .menu {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 15px;
-      padding: 15px;
+      padding: 20px;
     }
     .item {
       background: #fff;
       padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .item:hover {
+      transform: scale(1.03);
     }
     .item h3 {
       margin: 5px 0;
+      color: #006400;
+    }
+    .item p {
+      font-weight: bold;
+      color: #444;
     }
     .buttons {
       display: flex;
@@ -42,7 +51,7 @@
       margin-top: 10px;
     }
     .item button {
-      background: #ff6961;
+      background: #228B22;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -50,28 +59,38 @@
       border-radius: 6px;
       font-size: 14px;
       flex: 1;
+      transition: background 0.2s;
+    }
+    .item button:hover {
+      background: #006400;
     }
     .footer {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: white;
+      background: #fff8dc; /* amarelo suave */
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 12px;
-      border-top: 1px solid #ddd;
+      border-top: 2px solid #228B22;
       gap: 10px;
+      box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
     }
     .footer button {
-      background: #ff4500;
+      background: #daa520; /* dourado/amarelo forte */
       color: white;
       border: none;
       padding: 10px 18px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .footer button:hover {
+      background: #b8860b;
     }
     .footer input {
       flex: 1;
@@ -82,17 +101,21 @@
     }
     #pix-area {
       margin: 20px;
-      padding: 15px;
+      padding: 20px;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
       display: none;
+    }
+    #pix-area h2 {
+      color: #006400;
     }
     textarea {
       width: 100%;
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -199,7 +222,6 @@
       const nomeRecebedor = "Paroquia Sao Judas";
       const cidade = "Montes Claros";
 
-      // Payload Pix simples com o nome do cliente no campo "txid"
       let payload = `00020126360014BR.GOV.BCB.PIX01${chavePix.length}${chavePix}520400005303986540${total.toFixed(2).replace('.', '')}5802BR5914${nomeRecebedor}6009${cidade}62130515${nome}6304`;
 
       document.getElementById("pix-area").style.display = "block";
