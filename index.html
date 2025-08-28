@@ -9,11 +9,11 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f1f8f4; /* verde bem claro */
+      background: #f1f8f4;
       text-align: center;
     }
     h1 {
-      background: linear-gradient(90deg, #006400, #228B22); /* verde mais escuro e forte */
+      background: linear-gradient(90deg, #006400, #228B22);
       padding: 15px;
       margin: 0;
       font-size: 22px;
@@ -69,7 +69,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: #fff8dc; /* amarelo suave */
+      background: #fff8dc;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -79,7 +79,7 @@
       box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
     }
     .footer button {
-      background: #daa520; /* dourado/amarelo forte */
+      background: #daa520;
       color: white;
       border: none;
       padding: 10px 18px;
@@ -116,6 +116,21 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 14px;
+    }
+    .copy-btn {
+      margin-top: 10px;
+      background: #228B22;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover {
+      background: #006400;
     }
   </style>
 </head>
@@ -185,6 +200,8 @@
     <p>Use o QR Code ou copie o código Pix abaixo:</p>
     <div id="qrcode"></div>
     <textarea id="pixCode" rows="4" readonly></textarea>
+    <br>
+    <button class="copy-btn" onclick="copiarPix()">Copiar Código Pix</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -233,6 +250,14 @@
         width: 200,
         height: 200
       });
+    }
+
+    function copiarPix() {
+      const pixCode = document.getElementById("pixCode");
+      pixCode.select();
+      pixCode.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Código Pix copiado com sucesso!");
     }
   </script>
 
