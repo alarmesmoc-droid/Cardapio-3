@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>Cardápio Online Paróquia São Judas</title>
   <style>
     body {
@@ -71,30 +71,43 @@
       width: 100%;
       background: #fff8dc;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 12px;
+      padding: 10px;
       border-top: 2px solid #228B22;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
       z-index: 10;
+    }
+    .footer span {
+      font-weight: bold;
+      font-size: 14px;
+      color: #006400;
     }
     .footer button {
       background: #daa520;
       color: white;
       border: none;
-      padding: 10px 18px;
+      padding: 10px 14px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       transition: background 0.2s;
+      flex: 1;
+      min-width: 120px;
     }
-    .footer button:hover {
+    .footer button:hover:enabled {
       background: #b8860b;
     }
+    .footer button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
     .footer input {
-      flex: 1;
+      flex: 2;
+      min-width: 140px;
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -105,4 +118,135 @@
       padding: 20px;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0px 3px 8px rgba(
+      box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+      display: none;
+      margin-bottom: 90px; /* espaço extra acima da barra fixa */
+    }
+    #pix-area h2 {
+      color: #006400;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .copy-btn {
+      background: #228B22;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+    .copy-btn:hover:enabled {
+      background: #006400;
+    }
+    .copy-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cardápio Online Paróquia São Judas</h1>
+
+  <div class="menu" id="menu">
+    <div class="item"><h3>Macarrão</h3><p>R$ 10,00</p><div class="buttons"><button onclick="addItem(10)">+</button><button onclick="removeItem(10)">-</button></div></div>
+    <div class="item"><h3>Bolo</h3><p>R$ 7,00</p><div class="buttons"><button onclick="addItem(7)">+</button><button onclick="removeItem(7)">-</button></div></div>
+    <div class="item"><h3>Salgado</h3><p>R$ 6,00</p><div class="buttons"><button onclick="addItem(6)">+</button><button onclick="removeItem(6)">-</button></div></div>
+    <div class="item"><h3>Doce</h3><p>R$ 5,00</p><div class="buttons"><button onclick="addItem(5)">+</button><button onclick="removeItem(5)">-</button></div></div>
+    <div class="item"><h3>Refrigerante</h3><p>R$ 8,00</p><div class="buttons"><button onclick="addItem(8)">+</button><button onclick="removeItem(8)">-</button></div></div>
+    <div class="item"><h3>Suco</h3><p>R$ 5,00</p><div class="buttons"><button onclick="addItem(5)">+</button><button onclick="removeItem(5)">-</button></div></div>
+  </div>
+
+  <div class="footer">
+    <span id="total">Total: R$ 0,00</span>
+    <input type="text" id="nomeCliente" placeholder="Digite seu nome">
+    <button onclick="finalizarPedido()">Finalizar Pedido</button>
+    <button id="copyPixBtn" class="copy-btn" onclick="copiarPix()" disabled>Copiar Código Pix</button>
+  </div>
+
+  <div id="pix-area">
+    <h2>Finalize seu pagamento</h2>
+    <p>Use o QR Code ou copie o código Pix abaixo:</p>
+    <div id="qrcode"></div>
+    <textarea id="pixCode" rows="4" readonly></textarea>
+    <br>
+    <button class="copy-btn" onclick="copiarPix()">Copiar Código Pix</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    let total = 0;
+
+    function formatar(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function addItem(preco) {
+      total += preco;
+      document.getElementById("total").innerText = "Total: " + formatar(total);
+    }
+
+    function removeItem(preco) {
+      if (total >= preco) {
+        total -= preco;
+        document.getElementById("total").innerText = "Total: " + formatar(total);
+      }
+    }
+
+    function finalizarPedido() {
+      const nome = document.getElementById("nomeCliente").value.trim();
+      if (total <= 0) {
+        alert("Adicione pelo menos 1 item ao pedido.");
+        return;
+      }
+      if (!nome) {
+        alert("Digite seu nome antes de finalizar o pedido.");
+        return;
+      }
+
+      const chavePix = "03980793664";
+      const nomeRecebedor = "Paroquia Sao Judas";
+      const cidade = "Montes Claros";
+
+      let payload = `00020126360014BR.GOV.BCB.PIX01${chavePix.length}${chavePix}520400005303986540${total.toFixed(2).replace('.', '')}5802BR5914${nomeRecebedor}6009${cidade}62130515${nome}6304`;
+
+      document.getElementById("pix-area").style.display = "block";
+      document.getElementById("pixCode").value = payload;
+
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: payload,
+        width: 200,
+        height: 200
+      });
+
+      // 🔓 Ativar botão na barra fixa
+      document.getElementById("copyPixBtn").disabled = false;
+
+      document.getElementById("pix-area").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function copiarPix() {
+      const pixCode = document.getElementById("pixCode");
+      if (!pixCode.value) {
+        alert("Finalize o pedido para gerar o código Pix.");
+        return;
+      }
+      pixCode.select();
+      pixCode.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Código Pix copiado com sucesso!");
+    }
+  </script>
+
+</body>
+</html>
