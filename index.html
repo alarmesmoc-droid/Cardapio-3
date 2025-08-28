@@ -62,6 +62,7 @@
       align-items: center;
       padding: 12px;
       border-top: 1px solid #ddd;
+      gap: 10px;
     }
     .footer button {
       background: #ff4500;
@@ -72,6 +73,13 @@
       cursor: pointer;
       font-size: 16px;
     }
+    .footer input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
     #pix-area {
       margin: 20px;
       padding: 15px;
@@ -80,13 +88,11 @@
       box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
       display: none;
     }
-    input {
-      width: 90%;
+    textarea {
+      width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 14px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -99,63 +105,63 @@
       <h3>Macarrão</h3>
       <p>R$ 10,00</p>
       <div class="buttons">
-        <button onclick="addItem('Macarrão', 10)">+</button>
-        <button onclick="removeItem('Macarrão', 10)">-</button>
+        <button onclick="addItem(10)">+</button>
+        <button onclick="removeItem(10)">-</button>
       </div>
     </div>
     <div class="item">
       <h3>Bolo</h3>
       <p>R$ 7,00</p>
       <div class="buttons">
-        <button onclick="addItem('Bolo', 7)">+</button>
-        <button onclick="removeItem('Bolo', 7)">-</button>
+        <button onclick="addItem(7)">+</button>
+        <button onclick="removeItem(7)">-</button>
       </div>
     </div>
     <div class="item">
       <h3>Salgado</h3>
       <p>R$ 6,00</p>
       <div class="buttons">
-        <button onclick="addItem('Salgado', 6)">+</button>
-        <button onclick="removeItem('Salgado', 6)">-</button>
+        <button onclick="addItem(6)">+</button>
+        <button onclick="removeItem(6)">-</button>
       </div>
     </div>
     <div class="item">
       <h3>Doce</h3>
       <p>R$ 5,00</p>
       <div class="buttons">
-        <button onclick="addItem('Doce', 5)">+</button>
-        <button onclick="removeItem('Doce', 5)">-</button>
+        <button onclick="addItem(5)">+</button>
+        <button onclick="removeItem(5)">-</button>
       </div>
     </div>
     <div class="item">
       <h3>Refrigerante</h3>
       <p>R$ 8,00</p>
       <div class="buttons">
-        <button onclick="addItem('Refrigerante', 8)">+</button>
-        <button onclick="removeItem('Refrigerante', 8)">-</button>
+        <button onclick="addItem(8)">+</button>
+        <button onclick="removeItem(8)">-</button>
       </div>
     </div>
     <div class="item">
       <h3>Suco</h3>
       <p>R$ 5,00</p>
       <div class="buttons">
-        <button onclick="addItem('Suco', 5)">+</button>
-        <button onclick="removeItem('Suco', 5)">-</button>
+        <button onclick="addItem(5)">+</button>
+        <button onclick="removeItem(5)">-</button>
       </div>
     </div>
   </div>
 
   <div class="footer">
     <span id="total">Total: R$ 0,00</span>
+    <input type="text" id="nomeCliente" placeholder="Digite seu nome">
     <button onclick="finalizarPedido()">Finalizar Pedido</button>
   </div>
 
   <div id="pix-area">
     <h2>Finalize seu pagamento</h2>
-    <input type="text" id="nomeCliente" placeholder="Digite seu nome">
     <p>Use o QR Code ou copie o código Pix abaixo:</p>
     <div id="qrcode"></div>
-    <textarea id="pixCode" rows="4" style="width:100%;" readonly></textarea>
+    <textarea id="pixCode" rows="4" readonly></textarea>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -166,12 +172,12 @@
       return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    function addItem(nome, preco) {
+    function addItem(preco) {
       total += preco;
       document.getElementById("total").innerText = "Total: " + formatar(total);
     }
 
-    function removeItem(nome, preco) {
+    function removeItem(preco) {
       if (total >= preco) {
         total -= preco;
         document.getElementById("total").innerText = "Total: " + formatar(total);
@@ -193,7 +199,8 @@
       const nomeRecebedor = "Paroquia Sao Judas";
       const cidade = "Montes Claros";
 
-      let payload = `00020126360014BR.GOV.BCB.PIX01${chavePix.length}${chavePix}520400005303986540${total.toFixed(2).replace('.', '')}5802BR5914${nomeRecebedor}6009${cidade}62070503***6304`;
+      // Payload Pix simples com o nome do cliente no campo "txid"
+      let payload = `00020126360014BR.GOV.BCB.PIX01${chavePix.length}${chavePix}520400005303986540${total.toFixed(2).replace('.', '')}5802BR5914${nomeRecebedor}6009${cidade}62130515${nome}6304`;
 
       document.getElementById("pix-area").style.display = "block";
       document.getElementById("pixCode").value = payload;
